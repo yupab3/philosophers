@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 14:46:00 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/07 14:12:41 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:40:27 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,15 @@ long long	get_time_diff(long long runtime)
 	return (result);
 }
 
-/* func(miliseconds to sleep)
+/* func(address of philo, miliseconds to sleep)
 return : NONE(void) */
-int	ph_sleep(t_ph *ph, long milisec)
+int	ph_sleep(t_ph *ph, long long milisec)
 {
 	long long	set_time;
 
 	set_time = get_time();
+	if (milisec * 0.8 < ph->db->life - get_time_diff(ph->eat_time))
+		usleep(milisec * 800);
 	while (get_time_diff(set_time) < milisec)
 	{
 		usleep(100);
@@ -50,14 +52,31 @@ int	ph_sleep(t_ph *ph, long milisec)
 	return (TRUE);
 }
 
-// 슬립하는 함수를 따로 만들어서 관리한다
-// 시간 커지면 부정확해진다 usleep << 작은 숫자로 자주 깨어나면서 현재 시간이 얼마나 지났는지 확인하는 방식으로 구현하는 것이 정확하다
-// usleep으로 현재 시간의 80%정도만 쉬고 나머지 20%는 busy wait상태를 유지하는게 오히려 정확할 수 있다.
-
-// xsleep(start_time, time)
-// {
-// 	while (get_time() - start_time < time)
-// 	{
-// 		usleep(500);
-// 	}
-// }
+/* func(miliseconds to sleep)
+return : NONE(void) */
+int	ph_sleep_eat(t_ph *ph, long long milisec)
+{
+	if (milisec * 0.8 < ph->db->life)
+		usleep(milisec * 800);
+	while (get_time_diff(ph->eat_time) < milisec)
+	{
+		usleep(100);
+		if (chk_death(ph) == FALSE)
+			return (FALSE);
+	}
+	if (ph->db->infinity == 0)
+	{
+		if (--(ph->meals) == 0)
+		{
+			pthread_mutex_lock(ph->db->starving);
+			if (--(ph->db->starver) == 0)
+			{
+				pthread_mutex_lock(ph->db->kill);
+				ph->db->death = 1;
+				pthread_mutex_unlock(ph->db->kill);
+			}
+			pthread_mutex_unlock(ph->db->starving);
+		}
+	}
+	return (TRUE);
+}

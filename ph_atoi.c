@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 21:52:04 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/06 16:18:05 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:17:01 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ static void	ft_paraset(unsigned long *max_num, int *lim_num, int sign, \
 	int	size;
 
 	*acc = 0;
-	size = sizeof(int) * sizeof(void *);
-	*max_num = (sign) * ((unsigned int)1 << (size - 1)) - (sign > 0);
+	size = sizeof(long long) * sizeof(void *);
+	*max_num = (sign) * ((unsigned long long)1 << (size - 1)) - (sign > 0);
 	*lim_num = (*max_num % 10) + '0';
 }
 
 /* func(string to convert integer, address of result)
 return value : TRUE or FALSE */
-int	ph_atoi(const char *nptr, int *ans)
+int	ph_atoi(const char *nptr, long long *ans)
 {
 	unsigned long	acc;
 	unsigned long	max_num;

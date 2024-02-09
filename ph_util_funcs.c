@@ -6,11 +6,13 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:30:31 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/06 17:35:20 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/07 15:54:24 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
+
+static void	free_all_db(t_data *db_null_able);
 
 /* func(address of pthread_t, address of t_data)
 return : TRUE */
@@ -28,6 +30,7 @@ int	free_undef_error(pthread_t *tid_null_able, t_data *db_null_able,
 			idx++;
 		}
 	}
+	free_all_db(db_null_able);
 	free(tid_null_able);
 	free(auth_null_able);
 	free(db_null_able);
@@ -42,4 +45,20 @@ int	chk_arguments(int argc)
 		return (_rt_false_with_msg_nl_fd(
 				"func. chk_arguments - invalid argc", 2));
 	return (TRUE);
+}
+
+static void	free_all_db(t_data *db_null_able)
+{
+	if (db_null_able->starving != NULL)
+		pthread_mutex_destroy(db_null_able->starving);
+	if (db_null_able->print != NULL)
+		pthread_mutex_destroy(db_null_able->print);
+	if (db_null_able->kill != NULL)
+		pthread_mutex_destroy(db_null_able->kill);
+	if (db_null_able->ready != NULL)
+		pthread_mutex_destroy(db_null_able->ready);
+	free(db_null_able->starving);
+	free(db_null_able->print);
+	free(db_null_able->kill);
+	free(db_null_able->ready);
 }

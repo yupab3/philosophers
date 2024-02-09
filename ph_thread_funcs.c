@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:25:36 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/07 14:51:24 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:21:54 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,57 +27,22 @@ void	*astronut(void *data)
 	}
 	while (1)
 	{
-		if (chk_death(ph) == FALSE)
-		{
-			free(ph);
+		if (ph_think(ph) == FALSE)
 			return (NULL);
-		}
-		ph_print_str("%lld %d is thinking\n", ph);
-		pthread_mutex_lock(ph->auth[0]);
-		if (chk_death(ph) == FALSE)
-		{
-			pthread_mutex_unlock(ph->auth[0]);
-			free(ph);
+		if (ph_take_own_fork(ph) == FALSE)
 			return (NULL);
-		}
-		ph->fork[0] = 1;
-		ph_print_str("%lld %d has taken a fork\n", ph);
-		pthread_mutex_lock(ph->auth[1]);
-		if (chk_death(ph) == FALSE)
-		{
-			pthread_mutex_unlock(ph->auth[0]);
-			pthread_mutex_unlock(ph->auth[1]);
-			free(ph);
+		if (ph_take_other_fork(ph) == FALSE)
 			return (NULL);
-		}
-		ph->fork[1] = 1;
-		ph_print_str("%lld %d has taken a fork\n", ph);
-		if (ph->fork[0] == 1 && ph->fork[1] == 1)
-		{
-			ph->eat_time = get_time();
-			ph_print_str("%lld %d is eating\n", ph);
-			if (ph_sleep(ph, ph->db->eat) == FALSE)
-			{
-				pthread_mutex_unlock(ph->auth[0]);
-				pthread_mutex_unlock(ph->auth[1]);
-				free(ph);
-				return (NULL);
-			}
-			ph->fork[0] = 0;
-			ph->fork[1] = 0;
-		}
-		pthread_mutex_unlock(ph->auth[0]);
-		pthread_mutex_unlock(ph->auth[1]);
-		ph_print_str("%lld %d is sleeping\n", ph);
-		if (ph_sleep(ph, ph->db->sleep) == FALSE)
-		{
-			free(ph);
+		if (ph_eat_something(ph) == FALSE)
 			return (NULL);
-		}
+		if (ph_fall_in_sleep(ph) == FALSE)
+			return (NULL);
 	}
 	return (NULL);
 }
 
+/* func(address of philo)
+return : TRUE or FALSE */
 int	chk_death(t_ph *ph)
 {
 	if (get_time_diff(ph->eat_time) > ph->db->life)

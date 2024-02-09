@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:11:37 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/07 14:51:05 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/08 16:17:42 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,17 @@
 /* structure of input data */
 typedef struct s_data
 {
-	int				philo_count;
+	long long		philo_count;
+	int				starver;
 	int				death;
-	int				eat;
-	int				sleep;
-	int				life;
-	int				meals;
+	long long		eat;
+	long long		sleep;
+	long long		life;
+	long long		meals;
 	int				infinity;
 	int				printlock;
+	int				*fork;
+	pthread_mutex_t	*starving;
 	pthread_mutex_t	*print;
 	pthread_mutex_t	*kill;
 	pthread_mutex_t	*ready;
@@ -49,7 +52,6 @@ typedef struct s_data
 typedef struct s_ph
 {
 	pthread_mutex_t	*auth[2];
-	int				fork[2];
 	int				tag_no;
 	long long		eat_time;
 	int				meals;
@@ -58,11 +60,20 @@ typedef struct s_ph
 
 void			*astronut(void *data);
 
+int				ph_think(t_ph *ph);
+int				ph_take_own_fork(t_ph *ph);
+int				ph_take_other_fork(t_ph *ph);
+int				ph_eat_something(t_ph *ph);
+int				ph_fall_in_sleep(t_ph *ph);
+
+int				drop_fork(t_ph *ph);
+
 long long		get_time(void);
 long long		get_time_diff(long long runtime);
-int				ph_sleep(t_ph *ph, long milisec);
+int				ph_sleep(t_ph *ph, long long milisec);
+int				ph_sleep_eat(t_ph *ph, long long milisec);
 
-int				ph_atoi(const char *nptr, int *ans);
+int				ph_atoi(const char *nptr, long long *ans);
 void			ph_putnbr_fd(int n, int fd);
 
 int				chk_arguments(int argc);
@@ -72,6 +83,7 @@ int				free_undef_error(pthread_t *tid_null_able,
 int				standby(t_ph *ph);
 int				join_thread(pthread_t *tid, t_data *db);
 void			ph_print_str(char *str, t_ph *ph);
+void			ph_print_eat(char *str, t_ph *ph);
 void			ph_print_die(char *str, t_ph *ph);
 int				create_thread(pthread_mutex_t *auth, pthread_t *tid,
 					t_data *db);

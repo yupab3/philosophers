@@ -3,7 +3,8 @@ CFLAGS=			-Wall -Wextra -Werror
 NAME=			philo
 NAME_BONUS=		philo_bonus
 FILES=			philosophers ph_atoi ph_init_funcs ph_mutex_funcs ph_putnbr_fd \
-				ph_rt_funcs ph_thread_funcs ph_time_funcs ph_util_funcs ph_thread_utils
+				ph_rt_funcs ph_thread_funcs ph_time_funcs ph_util_funcs ph_thread_utils \
+				ph_action_funcs ph_action_utils
 SRC_BONUS=		$(addprefix ./philo_bonus/, $(FILES))
 SRCS=			$(addsuffix .c, $(FILES))
 SRCS_BONUS=		$(addsuffix _bonus.c, $(SRC_BONUS))

@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 16:55:55 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/07 14:50:57 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/08 17:37:15 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,25 @@ return : NONE(void) */
 int	standby(t_ph *ph)
 {
 	int	a;
+	int	delay;
 
 	a = ph->db->philo_count % 2;
+	delay = ph->db->eat;
+	if (delay == 0)
+		delay = ph->db->life;
 	pthread_mutex_lock(ph->db->ready);
 	pthread_mutex_unlock(ph->db->ready);
 	ph->eat_time = get_time();
 	if (a == 1 && ph->tag_no == 0)
 	{
-		if (ph_sleep(ph, ph->db->eat) == FALSE)
+		if (ph_sleep(ph, delay) == FALSE)
 			return (FALSE);
 	}
 	else if (ph->tag_no % 2 == 1)
 	{
-		if (ph_sleep(ph, ph->db->eat / 2) == FALSE)
+		if (ph_sleep(ph, delay / 2) == FALSE)
 			return (FALSE);
 	}
-	// printf("%d\n", ph->tag_no);
 	return (TRUE);
 }
 
@@ -46,7 +49,6 @@ int	create_thread(pthread_mutex_t *auth, pthread_t *tid, t_data *db)
 	idx = 0;
 	while (idx < db->philo_count)
 	{
-		// printf("pthread : %d\n", idx);
 		philo = init_philo(auth, db, idx);
 		if (philo == NULL && free_undef_error(tid, db, auth))
 			return (FALSE);
