@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:18:24 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/07 16:52:40 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/10 17:50:07 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ pthread_t	*init_tid(t_data *db)
 	tid = (pthread_t *)malloc(sizeof(pthread_t) * philo_count);
 	if (tid == NULL)
 		return (_rt_null_with_msg_nl_fd("func. init_tid - malloc error", 2));
-	memset(tid, 0, sizeof(pthread_t));
+	memset(tid, 0, sizeof(pthread_t) * philo_count);
 	return (tid);
 }
 

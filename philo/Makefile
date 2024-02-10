@@ -1,5 +1,5 @@
 CC=				cc
-CFLAGS=			-Wall -Wextra -Werror -fsanitize=thread
+CFLAGS=			-Wall -Wextra -Werror
 NAME=			philo
 FILES=			philosophers ph_atoi ph_init_funcs ph_mutex_funcs ph_putnbr_fd \
 				ph_rt_funcs ph_thread_funcs ph_time_funcs ph_util_funcs ph_thread_utils \
