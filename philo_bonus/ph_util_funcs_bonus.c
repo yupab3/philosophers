@@ -1,38 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ph_util_funcs.c                                    :+:      :+:    :+:   */
+/*   ph_util_funcs_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:30:31 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/07 15:54:24 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/10 19:36:42 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
-
-static void	free_all_db(t_data *db_null_able);
+#include "philosophers_bonus.h"
 
 /* func(address of pthread_t, address of t_data)
 return : TRUE */
-int	free_undef_error(pthread_t *tid_null_able, t_data *db_null_able,
-				pthread_mutex_t *auth_null_able)
+int	free_undef_error(int *pid_null_able, t_data *db_null_able,
+					sem_t *auth_null_able)
 {
 	int	idx;
 
-	if (auth_null_able != NULL)
+	if (auth_null_able != SEM_FAILED)
 	{
-		idx = 0;
-		while (idx < db_null_able->philo_count)
-		{
-			pthread_mutex_destroy(&auth_null_able[idx]);
-			idx++;
-		}
+		if (sem_close(auth_null_able) == -1)
+			write(2, "sem_close failed\n", 17);
+		sem_unlink("ph_fork");
 	}
-	free_all_db(db_null_able);
-	free(tid_null_able);
-	free(auth_null_able);
+	close_unlink_all_db_sem(db_null_able);
+	free(pid_null_able);
 	free(db_null_able);
 	return (TRUE);
 }
@@ -47,18 +41,18 @@ int	chk_arguments(int argc)
 	return (TRUE);
 }
 
-static void	free_all_db(t_data *db_null_able)
+void	close_unlink_all_db_sem(t_data *db_null_able)
 {
-	if (db_null_able->starving != NULL)
-		pthread_mutex_destroy(db_null_able->starving);
-	if (db_null_able->print != NULL)
-		pthread_mutex_destroy(db_null_able->print);
-	if (db_null_able->kill != NULL)
-		pthread_mutex_destroy(db_null_able->kill);
-	if (db_null_able->ready != NULL)
-		pthread_mutex_destroy(db_null_able->ready);
-	free(db_null_able->starving);
-	free(db_null_able->print);
-	free(db_null_able->kill);
-	free(db_null_able->ready);
+	if (db_null_able->starving != SEM_FAILED)
+		if (sem_close(db_null_able->starving) != SEM_FAILED)
+			write(2, "sem_close failed\n", 17);
+	if (db_null_able->ready != SEM_FAILED)
+		if (sem_close(db_null_able->ready) != SEM_FAILED)
+			write(2, "sem_close failed\n", 17);
+	if (db_null_able->print != SEM_FAILED)
+		if (sem_close(db_null_able->print) != SEM_FAILED)
+			write(2, "sem_close failed\n", 17);
+	sem_unlink("ph_starving");
+	sem_unlink("ph_print");
+	sem_unlink("ph_ready");
 }

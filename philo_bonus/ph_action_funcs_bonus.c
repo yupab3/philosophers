@@ -1,55 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ph_action_funcs.c                                  :+:      :+:    :+:   */
+/*   ph_action_funcs_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:56:54 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/08 17:21:49 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/10 18:58:04 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 /* func(address of philo)
 return : TRUE or FALSE */
 int	ph_think(t_ph *ph)
 {
-	if (chk_death(ph) == FALSE)
-	{
-		free(ph);
-		return (FALSE);
-	}
+	chk_death(ph);
 	ph_print_str("%lld %d is thinking\n", ph);
 	return (TRUE);
 }
 
 /* func(address of philo)
 return : TRUE or FALSE */
-int	ph_take_own_fork(t_ph *ph)
+int	ph_take_fork(t_ph *ph)
 {
 	while (chk_death(ph) == TRUE)
 	{
-		pthread_mutex_lock(ph->auth[0]);
-		if (ph->db->fork[ph->tag_no] == 0)
+		sem_wait(ph->auth);
+		ph_print_str("%lld %d has taken a fork\n", ph);
+		if (ph->db->philo_count == 1)
 		{
-			ph->db->fork[ph->tag_no] = 1;
-			ph_print_str("%lld %d has taken a fork\n", ph);
-			if (ph->auth[0] == ph->auth[1])
-			{
-				ph_sleep(ph, ph->db->life);
-				pthread_mutex_unlock(ph->auth[0]);
-				free(ph);
-				return (FALSE);
-			}
-			pthread_mutex_unlock(ph->auth[0]);
-			return (TRUE);
+			sem_post(ph->auth[0]);
+			ph_sleep(ph, ph->db->life);
 		}
-		pthread_mutex_unlock(ph->auth[0]);
+		sem_wait(ph->auth);
+		ph_print_str("%lld %d has taken a fork\n", ph);
 	}
-	free(ph);
-	return (FALSE);
+	return (TRUE);
 }
 
 /* func(address of philo)

@@ -1,29 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ph_action_utils.c                                  :+:      :+:    :+:   */
+/*   ph_mutex_funcs_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/08 14:37:44 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/08 16:49:02 by dongyeuk         ###   ########.fr       */
+/*   Created: 2024/02/06 15:27:24 by dongyeuk          #+#    #+#             */
+/*   Updated: 2024/02/09 12:50:12 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
-/* func(address of philo)
+/* func(auth, db)
 return : TRUE */
-int	drop_fork(t_ph *ph)
+int	destroy_mutex(pthread_mutex_t *auth, t_data *db)
 {
-	pthread_mutex_lock(ph->auth[0]);
-	ph->db->fork[ph->tag_no] = 0;
-	pthread_mutex_unlock(ph->auth[0]);
-	pthread_mutex_lock(ph->auth[1]);
-	if (ph->tag_no != ph->db->philo_count - 1)
-		ph->db->fork[ph->tag_no + 1] = 0;
-	else
-		ph->db->fork[0] = 0;
-	pthread_mutex_unlock(ph->auth[1]);
-	return (TRUE);
+	int	err_flag;
+	int	idx;
+
+	idx = 0;
+	err_flag = TRUE;
+	while (idx < db->philo_count)
+	{
+		if (pthread_mutex_destroy(&(auth[idx])) != SUCCESS)
+		{
+			write(2, "pthread_destroy failed at mutex array. auth idx : ", 50);
+			ph_putnbr_fd(idx, 2);
+			write(2, "\n", 1);
+			err_flag = FALSE;
+		}
+		idx++;
+	}
+	return (err_flag);
 }

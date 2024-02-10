@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ph_putnbr_fd.c                                     :+:      :+:    :+:   */
+/*   ph_putnbr_fd_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/07 16:04:05 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/06 17:35:23 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/09 12:50:12 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 static int	set_arr(char *arr, unsigned int n)
 {

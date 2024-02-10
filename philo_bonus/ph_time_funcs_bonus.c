@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ph_time_funcs.c                                    :+:      :+:    :+:   */
+/*   ph_time_funcs_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 14:46:00 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/08 17:40:27 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/10 19:00:56 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 /* func(void)
 return : (long long)current time(miliseconds) */
@@ -46,8 +46,7 @@ int	ph_sleep(t_ph *ph, long long milisec)
 	while (get_time_diff(set_time) < milisec)
 	{
 		usleep(100);
-		if (chk_death(ph) == FALSE)
-			return (FALSE);
+		chk_death(ph);
 	}
 	return (TRUE);
 }
@@ -61,22 +60,18 @@ int	ph_sleep_eat(t_ph *ph, long long milisec)
 	while (get_time_diff(ph->eat_time) < milisec)
 	{
 		usleep(100);
-		if (chk_death(ph) == FALSE)
-			return (FALSE);
+		chk_death(ph);
 	}
-	if (ph->db->infinity == 0)
+	if (--(ph->meals) == 0)
 	{
-		if (--(ph->meals) == 0)
+		pthread_mutex_lock(ph->db->starving);
+		if (--(ph->db->starver) == 0)
 		{
-			pthread_mutex_lock(ph->db->starving);
-			if (--(ph->db->starver) == 0)
-			{
-				pthread_mutex_lock(ph->db->kill);
-				ph->db->death = 1;
-				pthread_mutex_unlock(ph->db->kill);
-			}
-			pthread_mutex_unlock(ph->db->starving);
+			pthread_mutex_lock(ph->db->kill);
+			ph->db->death = 1;
+			pthread_mutex_unlock(ph->db->kill);
 		}
+		pthread_mutex_unlock(ph->db->starving);
 	}
 	return (TRUE);
 }

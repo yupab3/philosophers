@@ -1,36 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ph_mutex_funcs.c                                   :+:      :+:    :+:   */
+/*   ph_action_utils_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/06 15:27:24 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/06 17:34:45 by dongyeuk         ###   ########.fr       */
+/*   Created: 2024/02/08 14:37:44 by dongyeuk          #+#    #+#             */
+/*   Updated: 2024/02/10 18:59:34 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
-/* func(auth, db)
+/* func(address of philo)
 return : TRUE */
-int	destroy_mutex(pthread_mutex_t *auth, t_data *db)
+int	drop_fork(t_ph *ph)
 {
-	int	err_flag;
-	int	idx;
-
-	idx = 0;
-	err_flag = TRUE;
-	while (idx < db->philo_count)
-	{
-		if (pthread_mutex_destroy(&(auth[idx])) != SUCCESS)
-		{
-			write(2, "pthread_destroy failed at mutex array. auth idx : ", 50);
-			ph_putnbr_fd(idx, 2);
-			write(2, "\n", 1);
-			err_flag = FALSE;
-		}
-		idx++;
-	}
-	return (err_flag);
+	sem_post(ph->auth);
+	sem_post(ph->auth);
+	return (TRUE);
 }

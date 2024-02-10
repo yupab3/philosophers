@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ph_thread_funcs.c                                  :+:      :+:    :+:   */
+/*   ph_thread_funcs_bonus.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:25:36 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/08 17:21:54 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/10 19:32:36 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "philosophers_bonus.h"
 
 /* func(address of data - arg of astronut)
 return : NONE(void)
 Astronut who takes philosophers to space */
-void	*astronut(void *data)
+void	*astronut(t_ph *ph)
 {
-	t_ph	*ph;
-
-	ph = (t_ph *)data;
 	if (standby(ph) == FALSE)
 	{
 		free(ph);
@@ -29,10 +26,10 @@ void	*astronut(void *data)
 	{
 		if (ph_think(ph) == FALSE)
 			return (NULL);
-		if (ph_take_own_fork(ph) == FALSE)
+		if (ph_take_fork(ph) == FALSE)
 			return (NULL);
-		if (ph_take_other_fork(ph) == FALSE)
-			return (NULL);
+		// if (ph_take_other_fork(ph) == FALSE)
+		// 	return (NULL);
 		if (ph_eat_something(ph) == FALSE)
 			return (NULL);
 		if (ph_fall_in_sleep(ph) == FALSE)
@@ -42,23 +39,22 @@ void	*astronut(void *data)
 }
 
 /* func(address of philo)
-return : TRUE or FALSE */
+return : TRUE
+exit case : died(1) */
 int	chk_death(t_ph *ph)
 {
+	int	idx;
+
+	idx = 0;
 	if (get_time_diff(ph->eat_time) > ph->db->life)
 	{
-		pthread_mutex_lock(ph->db->kill);
-		if (ph->db->death == 0)
-			ph_print_die("%lld %d died\n", ph);
-		ph->db->death = 1;
-		pthread_mutex_unlock(ph->db->kill);
+		ph_print_die("%lld %d died\n", ph);
+		while (idx < ph->db->philo_count)
+		{
+			sem_post(ph->db->starving);
+			idx++;
+		}
+		exit(1);
 	}
-	pthread_mutex_lock(ph->db->kill);
-	if (ph->db->death != 0)
-	{
-		pthread_mutex_unlock(ph->db->kill);
-		return (FALSE);
-	}
-	pthread_mutex_unlock(ph->db->kill);
 	return (TRUE);
 }
