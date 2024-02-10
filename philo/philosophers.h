@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:11:37 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/08 16:17:42 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/10 17:21:21 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ int				free_undef_error(pthread_t *tid_null_able,
 int				standby(t_ph *ph);
 int				join_thread(pthread_t *tid, t_data *db);
 void			ph_print_str(char *str, t_ph *ph);
-void			ph_print_eat(char *str, t_ph *ph);
 void			ph_print_die(char *str, t_ph *ph);
 int				create_thread(pthread_mutex_t *auth, pthread_t *tid,
 					t_data *db);

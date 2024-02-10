@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:30:31 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/07 15:54:24 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/10 15:21:11 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ int	chk_arguments(int argc)
 
 static void	free_all_db(t_data *db_null_able)
 {
+	if (db_null_able == NULL)
+		return ;
 	if (db_null_able->starving != NULL)
 		pthread_mutex_destroy(db_null_able->starving);
 	if (db_null_able->print != NULL)
