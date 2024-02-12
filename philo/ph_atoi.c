@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 21:52:04 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/08 16:17:01 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/12 13:16:05 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	ph_atoi(const char *nptr, long long *ans)
 	if (*nptr == '-' || *nptr == '+')
 		if (*nptr++ == '-')
 			sign *= -1;
+	if (*nptr == '\0')
+		return (FALSE);
 	ft_paraset(&max_num, &lim_num, sign, &acc);
 	while ('0' <= *nptr && *nptr <= '9')
 	{
@@ -46,7 +48,7 @@ int	ph_atoi(const char *nptr, long long *ans)
 			return (FALSE);
 		nptr++;
 	}
-	if (*nptr != 0)
+	if (*nptr != 0 || (sign == -1 && acc != 0))
 		return (FALSE);
 	*ans = sign * acc;
 	return (TRUE);
