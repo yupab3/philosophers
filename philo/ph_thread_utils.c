@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 16:55:55 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/08 17:37:15 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:52:09 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,9 @@ int	create_thread(pthread_mutex_t *auth, pthread_t *tid, t_data *db)
 	int				idx;
 
 	idx = 0;
+	db->life *= 1000;
+	db->eat *= 1000;
+	db->sleep *= 1000;
 	while (idx < db->philo_count)
 	{
 		philo = init_philo(auth, db, idx);
@@ -93,7 +96,7 @@ void	ph_print_str(char *str, t_ph *ph)
 {
 	pthread_mutex_lock(ph->db->print);
 	if (ph->db->printlock == 0)
-		printf(str, get_time_diff(ph->db->init_time), ph->tag_no);
+		printf(str, get_time_diff(ph->db->init_time) / 1000, ph->tag_no);
 	pthread_mutex_unlock(ph->db->print);
 }
 
@@ -101,7 +104,7 @@ void	ph_print_die(char *str, t_ph *ph)
 {
 	pthread_mutex_lock(ph->db->print);
 	if (ph->db->printlock == 0)
-		printf(str, get_time_diff(ph->db->init_time), ph->tag_no);
+		printf(str, get_time_diff(ph->db->init_time) / 1000, ph->tag_no);
 	if (get_time_diff(ph->eat_time) > ph->db->life)
 		ph->db->printlock = 1;
 	pthread_mutex_unlock(ph->db->print);

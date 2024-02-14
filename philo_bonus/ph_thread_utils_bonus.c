@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 16:55:55 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/11 15:42:23 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:10:09 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ int	create_child(sem_t *auth, int *pid, t_data *db)
 	}
 	if (idx != db->philo_count)
 	{
-		join_thread(tid, db);
+		idx = 0;
+		while (idx++ < db->philo_count)
+			sem_post(db->starving);
+		kill_process(pid, db);
 		return (_rt_false_with_msg_nl_fd(
 				"func. create_child - pthread create error", 2));
 	}
@@ -69,7 +72,7 @@ int	create_child(sem_t *auth, int *pid, t_data *db)
 
 /* func(tid, db)
 return : TRUE */
-int	join_thread(pthread_t *tid, t_data *db)
+int	kill_process(int *pid, t_data *db)
 {
 	int	err_flag;
 	int	idx;
@@ -77,10 +80,12 @@ int	join_thread(pthread_t *tid, t_data *db)
 	idx = 0;
 	err_flag = TRUE;
 	while (idx < db->philo_count)
+		sem_wait(db->starving);
+	while (pid[idx] != 0 && idx < db->philo_count)
 	{
-		if (pthread_join(tid[idx], NULL) != SUCCESS)
+		if (kill(pid[idx], SIGKILL) != SUCCESS)
 		{
-			write(2, "pthread_join failed, tid idx : ", 27);
+			write(2, "kill failed, pid idx : ", 27);
 			ph_putnbr_fd(idx, 2);
 			write(2, "\n", 1);
 			err_flag = FALSE;

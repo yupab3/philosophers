@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:11:37 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/10 19:37:04 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:50:53 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ int				free_undef_error(int *pid_null_able, t_data *db_null_able,
 					sem_t *auth_null_able);
 
 int				standby(t_ph *ph);
-int				join_thread(pthread_t *tid, t_data *db);
+int				kill_process(int *pid, t_data *db);
 void			ph_print_str(char *str, t_ph *ph);
 void			ph_print_die(char *str, t_ph *ph);
 int				create_child(sem_t *auth, int *tid, t_data *db);
 
-int				destroy_mutex(pthread_mutex_t *auth, t_data *db);
+int				destroy_sem(sem_t *auth, t_data *db, int *pid);
 
 int				chk_death(t_ph *ph);
 
@@ -94,7 +94,7 @@ int				init_sem_db(t_data *db);
 int				_rt_false_with_msg_nl_fd(char *null_able, int fd);
 int				_rt_failure_with_msg_nl_fd(char *null_able, int fd);
 void			*_rt_null_with_msg_nl_fd(char *null_able, int fd);
-void			*_rt_false_with_msg_cleaning_sem(char *null_able,
-					int fd, t_data *db);
+int				_rt_false_with_msg_cleaning_sem(char *null_able, int fd,
+					t_data *db);
 
 #endif

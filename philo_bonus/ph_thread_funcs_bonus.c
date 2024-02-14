@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:25:36 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/10 19:32:36 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/13 16:11:57 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,22 @@ void	*astronut(t_ph *ph)
 	if (standby(ph) == FALSE)
 	{
 		free(ph);
-		return (NULL);
+		exit(0);
 	}
 	while (1)
 	{
 		if (ph_think(ph) == FALSE)
-			return (NULL);
+			exit(0);
 		if (ph_take_fork(ph) == FALSE)
-			return (NULL);
+			exit(0);
 		// if (ph_take_other_fork(ph) == FALSE)
 		// 	return (NULL);
 		if (ph_eat_something(ph) == FALSE)
-			return (NULL);
+			exit(0);
 		if (ph_fall_in_sleep(ph) == FALSE)
-			return (NULL);
+			exit(0);
 	}
-	return (NULL);
+	exit(0);
 }
 
 /* func(address of philo)

@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:30:31 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/10 19:36:42 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 14:51:46 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ return : TRUE */
 int	free_undef_error(int *pid_null_able, t_data *db_null_able,
 					sem_t *auth_null_able)
 {
-	int	idx;
-
 	if (auth_null_able != SEM_FAILED)
 	{
 		if (sem_close(auth_null_able) == -1)
@@ -44,13 +42,13 @@ int	chk_arguments(int argc)
 void	close_unlink_all_db_sem(t_data *db_null_able)
 {
 	if (db_null_able->starving != SEM_FAILED)
-		if (sem_close(db_null_able->starving) != SEM_FAILED)
+		if (sem_close(db_null_able->starving) != -1)
 			write(2, "sem_close failed\n", 17);
 	if (db_null_able->ready != SEM_FAILED)
-		if (sem_close(db_null_able->ready) != SEM_FAILED)
+		if (sem_close(db_null_able->ready) != -1)
 			write(2, "sem_close failed\n", 17);
 	if (db_null_able->print != SEM_FAILED)
-		if (sem_close(db_null_able->print) != SEM_FAILED)
+		if (sem_close(db_null_able->print) != -1)
 			write(2, "sem_close failed\n", 17);
 	sem_unlink("ph_starving");
 	sem_unlink("ph_print");

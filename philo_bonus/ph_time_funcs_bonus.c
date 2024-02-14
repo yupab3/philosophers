@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 14:46:00 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/10 19:00:56 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:41:12 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,6 @@ int	ph_sleep_eat(t_ph *ph, long long milisec)
 		chk_death(ph);
 	}
 	if (--(ph->meals) == 0)
-	{
-		pthread_mutex_lock(ph->db->starving);
-		if (--(ph->db->starver) == 0)
-		{
-			pthread_mutex_lock(ph->db->kill);
-			ph->db->death = 1;
-			pthread_mutex_unlock(ph->db->kill);
-		}
-		pthread_mutex_unlock(ph->db->starving);
-	}
+		sem_post(ph->db->starving);
 	return (TRUE);
 }
