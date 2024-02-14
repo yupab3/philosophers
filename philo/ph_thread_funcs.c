@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:25:36 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 16:38:13 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:42:37 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ int	chk_death(t_ph *ph)
 	if (ph->db->death != 0)
 	{
 		pthread_mutex_unlock(ph->db->kill);
-		pthread_mutex_unlock(ph->auth[0]);
-		pthread_mutex_unlock(ph->auth[1]);
 		return (FALSE);
 	}
 	pthread_mutex_unlock(ph->db->kill);

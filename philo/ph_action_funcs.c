@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:56:54 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 16:38:19 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:42:03 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	ph_take_other_fork(t_ph *ph)
 		}
 		pthread_mutex_unlock(ph->auth[1]);
 	}
-	pthread_mutex_unlock(ph->auth[0]);
 	free(ph);
 	return (FALSE);
 }
