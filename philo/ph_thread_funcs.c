@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:25:36 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 16:33:07 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:38:13 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,29 +57,8 @@ int	chk_death(t_ph *ph)
 	if (ph->db->death != 0)
 	{
 		pthread_mutex_unlock(ph->db->kill);
-		return (FALSE);
-	}
-	pthread_mutex_unlock(ph->db->kill);
-	return (TRUE);
-}
-
-/* func(address of philo)
-return : TRUE or FALSE */
-int	chk_death_unlock_own(t_ph *ph)
-{
-	if (get_time_diff(ph->eat_time) > ph->db->life)
-	{
-		pthread_mutex_lock(ph->db->kill);
-		if (ph->db->death == 0)
-			ph_print_die("%lld %d died\n", ph);
-		ph->db->death = 1;
-		pthread_mutex_unlock(ph->db->kill);
-	}
-	pthread_mutex_lock(ph->db->kill);
-	if (ph->db->death != 0)
-	{
-		pthread_mutex_unlock(ph->db->kill);
 		pthread_mutex_unlock(ph->auth[0]);
+		pthread_mutex_unlock(ph->auth[1]);
 		return (FALSE);
 	}
 	pthread_mutex_unlock(ph->db->kill);
