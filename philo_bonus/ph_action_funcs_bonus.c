@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:56:54 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:52:42 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:12:49 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,20 @@ int	ph_think(t_ph *ph)
 return : TRUE or FALSE */
 int	ph_take_fork(t_ph *ph)
 {
-	while (chk_death(ph) == TRUE)
+	if (ph->chk_time == 0)
+		chk_death(ph);
+	else
+		ph_sleep(ph, ph->chk_time);
+	sem_wait(ph->auth);
+	ph_print_str("%lld %d has taken a fork\n", ph);
+	if (ph->db->philo_count == 1)
 	{
-		sem_wait(ph->auth);
-		ph_print_str("%lld %d has taken a fork\n", ph);
-		if (ph->db->philo_count == 1)
-		{
-			sem_post(ph->auth);
-			ph_sleep(ph, ph->db->life);
-		}
-		sem_wait(ph->auth);
-		ph_print_str("%lld %d has taken a fork\n", ph);
+		sem_post(ph->auth);
+		ph_sleep(ph, ph->db->life);
 	}
+	sem_wait(ph->auth);
+	ph_print_str("%lld %d has taken a fork\n", ph);
+
 	return (TRUE);
 }
 

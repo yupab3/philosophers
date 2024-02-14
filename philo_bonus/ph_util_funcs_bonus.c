@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:30:31 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:51:46 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:20:18 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ int	chk_arguments(int argc)
 void	close_unlink_all_db_sem(t_data *db_null_able)
 {
 	if (db_null_able->starving != SEM_FAILED)
-		if (sem_close(db_null_able->starving) != -1)
+		if (sem_close(db_null_able->starving) == -1)
 			write(2, "sem_close failed\n", 17);
 	if (db_null_able->ready != SEM_FAILED)
-		if (sem_close(db_null_able->ready) != -1)
+		if (sem_close(db_null_able->ready) == -1)
 			write(2, "sem_close failed\n", 17);
 	if (db_null_able->print != SEM_FAILED)
-		if (sem_close(db_null_able->print) != -1)
+		if (sem_close(db_null_able->print) == -1)
 			write(2, "sem_close failed\n", 17);
 	sem_unlink("ph_starving");
 	sem_unlink("ph_print");

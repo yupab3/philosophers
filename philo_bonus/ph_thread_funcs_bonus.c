@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:25:36 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/13 16:11:57 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:58:57 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	*astronut(t_ph *ph)
 			exit(0);
 		if (ph_take_fork(ph) == FALSE)
 			exit(0);
-		// if (ph_take_other_fork(ph) == FALSE)
-		// 	return (NULL);
 		if (ph_eat_something(ph) == FALSE)
 			exit(0);
 		if (ph_fall_in_sleep(ph) == FALSE)

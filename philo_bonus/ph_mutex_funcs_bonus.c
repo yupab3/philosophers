@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 15:27:24 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:51:25 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:20:27 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	destroy_sem(sem_t *auth, t_data *db, int *pid)
 
 	idx = 0;
 	err_flag = TRUE;
-	sem_unlink("ph_fork");
+	sem_unlink("ph_auth");
 	if (auth != SEM_FAILED)
-		if (sem_close(auth) != -1)
+		if (sem_close(auth) == -1)
 			write(2, "sem_close failed\n", 17);
 	close_unlink_all_db_sem(db);
 	free(pid);

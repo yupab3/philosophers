@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 16:55:55 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:10:09 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:17:01 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,16 @@ int	standby(t_ph *ph)
 	int	delay;
 
 	a = ph->db->philo_count % 2;
+	ph->chk_time = (ph->db->life - ph->db->eat - ph->db->sleep) / 2;
+	if (ph->chk_time <= 100)
+		ph->chk_time = 0;
 	delay = ph->db->eat;
 	if (delay == 0)
 		delay = ph->db->life;
 	sem_wait(ph->db->ready);
 	sem_post(ph->db->ready);
-	ph->eat_time = get_time();
+	ph->db->init_time = get_time();
+	ph->eat_time = ph->db->init_time;
 	if (a == 1 && ph->tag_no == 0)
 	{
 		if (ph_sleep(ph, delay) == FALSE)
@@ -55,6 +59,7 @@ int	create_child(sem_t *auth, int *pid, t_data *db)
 		pid[idx] = fork();
 		if (pid[idx] == 0)
 			astronut(philo);
+		free(philo);
 		idx++;
 	}
 	if (idx != db->philo_count)
@@ -66,7 +71,6 @@ int	create_child(sem_t *auth, int *pid, t_data *db)
 		return (_rt_false_with_msg_nl_fd(
 				"func. create_child - pthread create error", 2));
 	}
-	db->init_time = get_time();
 	return (TRUE);
 }
 
@@ -79,7 +83,7 @@ int	kill_process(int *pid, t_data *db)
 
 	idx = 0;
 	err_flag = TRUE;
-	while (idx < db->philo_count)
+	while (idx++ < db->philo_count)
 		sem_wait(db->starving);
 	while (pid[idx] != 0 && idx < db->philo_count)
 	{
@@ -98,12 +102,12 @@ int	kill_process(int *pid, t_data *db)
 void	ph_print_str(char *str, t_ph *ph)
 {
 	sem_wait(ph->db->print);
-	printf(str, get_time_diff(ph->db->init_time), ph->tag_no);
+	printf(str, get_time_diff(ph->db->init_time) / 1000, ph->tag_no);
 	sem_post(ph->db->print);
 }
 
 void	ph_print_die(char *str, t_ph *ph)
 {
 	sem_wait(ph->db->print);
-	printf(str, get_time_diff(ph->db->init_time), ph->tag_no);
+	printf(str, get_time_diff(ph->db->init_time) / 1000, ph->tag_no);
 }

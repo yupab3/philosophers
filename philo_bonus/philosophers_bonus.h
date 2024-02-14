@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:11:37 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 14:50:53 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:57:22 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_ph
 	int				tag_no;
 	long long		eat_time;
 	int				meals;
+	long long		chk_time;
 	t_data			*db;
 }				t_ph;
 

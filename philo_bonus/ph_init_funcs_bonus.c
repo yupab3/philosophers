@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:18:24 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/13 16:08:39 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:30:24 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,9 @@ int	*init_pid(t_data *db)
 	int			*pid;
 	int			philo_count;
 
+	db->life *= 1000;
+	db->eat *= 1000;
+	db->sleep *= 1000;
 	if (db == NULL)
 		return (_rt_null_with_msg_nl_fd("func. init_pid - db is NULL", 2));
 	philo_count = db->philo_count;
@@ -83,6 +86,7 @@ int	init_sem_db(t_data *db)
 	sem_unlink("ph_starving");
 	sem_unlink("ph_ready");
 	sem_unlink("ph_print");
+	sem_unlink("ph_auth");
 	db->starving = sem_open("ph_starving",
 			O_CREAT | O_RDWR, 0644, 0);
 	db->ready = sem_open("ph_ready",
