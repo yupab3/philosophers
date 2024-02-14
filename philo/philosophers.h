@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/25 14:11:37 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/13 16:38:23 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:33:42 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int				create_thread(pthread_mutex_t *auth, pthread_t *tid,
 int				destroy_mutex(pthread_mutex_t *auth, t_data *db);
 
 int				chk_death(t_ph *ph);
+int				chk_death_unlock_own(t_ph *ph);
 
 t_ph			*init_philo(pthread_mutex_t *auth, t_data *db, int tag_no);
 pthread_mutex_t	*init_mutex(t_data *db);

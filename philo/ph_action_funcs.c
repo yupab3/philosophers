@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:56:54 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/08 17:21:49 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:33:53 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ph_take_own_fork(t_ph *ph)
 return : TRUE or FALSE */
 int	ph_take_other_fork(t_ph *ph)
 {
-	while (chk_death(ph) == TRUE)
+	while (chk_death_unlock_own(ph) == TRUE)
 	{
 		pthread_mutex_lock(ph->auth[1]);
 		if ((ph->tag_no == ph->db->philo_count - 1 && ph->db->fork[0] == 0)
