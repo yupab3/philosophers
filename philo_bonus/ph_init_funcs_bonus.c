@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:18:24 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/15 12:01:52 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/15 17:25:35 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_ph	*init_philo(sem_t *auth, t_data *db, int tag_no)
 	memset(ph, 0, sizeof(t_ph));
 	ph->db = db;
 	ph->meals = ph->db->meals;
-	ph->tag_no = tag_no;
+	ph->tag_no = tag_no + 1;
 	ph->auth = auth;
 	return (ph);
 }
