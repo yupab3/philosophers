@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 10:58:46 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 15:13:12 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:10:24 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	*_rt_null_with_msg_nl_fd(char *null_able, int fd)
 
 /* func(string to print, filedescriptor)
 return : (void *)NULL */
-int		_rt_false_with_msg_cleaning_sem(char *null_able, int fd, t_data *db)
+int	_rt_false_with_msg_cleaning_sem(char *null_able, int fd, t_data *db)
 {
 	int	len;
 

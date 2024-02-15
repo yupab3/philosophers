@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:30:31 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 16:20:18 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:09:01 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ return : TRUE */
 int	free_undef_error(int *pid_null_able, t_data *db_null_able,
 					sem_t *auth_null_able)
 {
-	if (auth_null_able != SEM_FAILED)
+	if (auth_null_able != SEM_FAILED && auth_null_able != NULL)
 	{
 		if (sem_close(auth_null_able) == -1)
 			write(2, "sem_close failed\n", 17);
@@ -41,6 +41,8 @@ int	chk_arguments(int argc)
 
 void	close_unlink_all_db_sem(t_data *db_null_able)
 {
+	if (db_null_able == NULL)
+		return ;
 	if (db_null_able->starving != SEM_FAILED)
 		if (sem_close(db_null_able->starving) == -1)
 			write(2, "sem_close failed\n", 17);

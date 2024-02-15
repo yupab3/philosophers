@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:18:24 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 15:30:24 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/15 12:01:52 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,11 @@ int	*init_pid(t_data *db)
 	int			*pid;
 	int			philo_count;
 
+	if (db == NULL)
+		return (_rt_null_with_msg_nl_fd("func. init_pid - db is NULL", 2));
 	db->life *= 1000;
 	db->eat *= 1000;
 	db->sleep *= 1000;
-	if (db == NULL)
-		return (_rt_null_with_msg_nl_fd("func. init_pid - db is NULL", 2));
 	philo_count = db->philo_count;
 	pid = (int *)malloc(sizeof(int) * philo_count);
 	if (pid == NULL)

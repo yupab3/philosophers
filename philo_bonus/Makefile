@@ -24,4 +24,4 @@ clean:
 fclean:	clean
 	$(RM) $(NAME_BONUS)
 
-re:	fclean all
+re:	fclean bonus

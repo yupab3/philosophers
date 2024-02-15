@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 16:55:55 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 16:17:01 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/15 14:13:41 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ int	standby(t_ph *ph)
 	int	delay;
 
 	a = ph->db->philo_count % 2;
-	ph->chk_time = (ph->db->life - ph->db->eat - ph->db->sleep) / 2;
-	if (ph->chk_time <= 100)
-		ph->chk_time = 0;
 	delay = ph->db->eat;
+	if (ph->db->eat != ph->db->sleep)
+		ph->chk_time = ph->db->eat - ph->db->sleep;
+	if (a == 1)
+		ph->chk_time = ph->db->eat;
 	if (delay == 0)
 		delay = ph->db->life;
 	sem_wait(ph->db->ready);
 	sem_post(ph->db->ready);
-	ph->db->init_time = get_time();
 	ph->eat_time = ph->db->init_time;
 	if (a == 1 && ph->tag_no == 0)
 	{
@@ -85,6 +85,7 @@ int	kill_process(int *pid, t_data *db)
 	err_flag = TRUE;
 	while (idx++ < db->philo_count)
 		sem_wait(db->starving);
+	idx = 0;
 	while (pid[idx] != 0 && idx < db->philo_count)
 	{
 		if (kill(pid[idx], SIGKILL) != SUCCESS)
