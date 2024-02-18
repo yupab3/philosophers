@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 16:55:55 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 16:41:05 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:44:31 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	ph_print_str(char *str, t_ph *ph)
 {
 	pthread_mutex_lock(ph->db->print);
 	if (ph->db->printlock == 0)
-		printf(str, get_time_diff(ph->db->init_time) / 1000, ph->tag_no);
+		printf(str, get_time_diff(ph->db->init_time) / 1000, ph->tag_no + 1);
 	pthread_mutex_unlock(ph->db->print);
 }
 
@@ -104,7 +104,7 @@ void	ph_print_die(char *str, t_ph *ph)
 {
 	pthread_mutex_lock(ph->db->print);
 	if (ph->db->printlock == 0)
-		printf(str, get_time_diff(ph->db->init_time) / 1000, ph->tag_no);
+		printf(str, get_time_diff(ph->db->init_time) / 1000, ph->tag_no + 1);
 	if (get_time_diff(ph->eat_time) > ph->db->life)
 		ph->db->printlock = 1;
 	pthread_mutex_unlock(ph->db->print);

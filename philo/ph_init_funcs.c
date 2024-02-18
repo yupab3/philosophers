@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 11:18:24 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/15 17:25:26 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/18 19:56:38 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_ph	*init_philo(pthread_mutex_t *auth, t_data *db, int tag_no)
 	memset(ph, 0, sizeof(t_ph));
 	ph->db = db;
 	ph->meals = ph->db->meals;
-	ph->tag_no = tag_no + 1;
+	ph->tag_no = tag_no;
 	ph->auth[0] = &auth[tag_no];
 	if (tag_no == db->philo_count - 1)
 		ph->auth[1] = &auth[0];

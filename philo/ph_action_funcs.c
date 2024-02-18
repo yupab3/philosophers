@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:56:54 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/14 16:42:03 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/02/18 20:44:17 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	ph_take_own_fork(t_ph *ph)
 			return (TRUE);
 		}
 		pthread_mutex_unlock(ph->auth[0]);
+		usleep(100);
 	}
 	free(ph);
 	return (FALSE);
@@ -72,6 +73,7 @@ int	ph_take_other_fork(t_ph *ph)
 			return (TRUE);
 		}
 		pthread_mutex_unlock(ph->auth[1]);
+		usleep(100);
 	}
 	free(ph);
 	return (FALSE);
@@ -81,29 +83,12 @@ int	ph_take_other_fork(t_ph *ph)
 return : TRUE or FALSE */
 int	ph_eat_something(t_ph *ph)
 {
-	pthread_mutex_lock(ph->auth[0]);
-	pthread_mutex_lock(ph->auth[1]);
-	if ((ph->tag_no != ph->db->philo_count - 1
-			&& ph->db->fork[ph->tag_no] == 1
-			&& ph->db->fork[ph->tag_no + 1] == 1)
-		|| (ph->tag_no == ph->db->philo_count - 1
-			&& ph->db->fork[ph->tag_no] == 1
-			&& ph->db->fork[0] == 1))
+	ph->eat_time = get_time();
+	ph_print_str("%lld %d is eating\n", ph);
+	if (ph_sleep_eat(ph, ph->db->eat) == FALSE)
 	{
-		pthread_mutex_unlock(ph->auth[0]);
-		pthread_mutex_unlock(ph->auth[1]);
-		ph->eat_time = get_time();
-		ph_print_str("%lld %d is eating\n", ph);
-		if (ph_sleep_eat(ph, ph->db->eat) == FALSE)
-		{
-			free(ph);
-			return (FALSE);
-		}
-	}
-	else
-	{
-		pthread_mutex_unlock(ph->auth[0]);
-		pthread_mutex_unlock(ph->auth[1]);
+		free(ph);
+		return (FALSE);
 	}
 	return (drop_fork(ph));
 }
