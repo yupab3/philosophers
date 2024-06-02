@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 12:56:54 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/15 13:55:24 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/06/02 16:40:03 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	ph_think(t_ph *ph)
 return : TRUE or FALSE */
 int	ph_take_fork(t_ph *ph)
 {
-	if (ph->chk_first == 1)
+	if (ph->chk_time != 0 && ph->chk_first)
 		ph_sleep(ph, ph->chk_time);
 	else
 		ph->chk_first = 1;
@@ -36,6 +36,7 @@ int	ph_take_fork(t_ph *ph)
 		sem_post(ph->auth);
 		ph_sleep(ph, ph->db->life);
 	}
+	chk_death(ph);
 	sem_wait(ph->auth);
 	ph_print_str("%lld %d has taken a fork\n", ph);
 	return (TRUE);
@@ -45,6 +46,7 @@ int	ph_take_fork(t_ph *ph)
 return : TRUE or FALSE */
 int	ph_eat_something(t_ph *ph)
 {
+	chk_death(ph);
 	ph->eat_time = get_time();
 	ph_print_str("%lld %d is eating\n", ph);
 	if (ph_sleep_eat(ph, ph->db->eat) == FALSE)
