@@ -6,7 +6,7 @@
 /*   By: dongyeuk <dongyeuk@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/06 16:55:55 by dongyeuk          #+#    #+#             */
-/*   Updated: 2024/02/15 14:13:41 by dongyeuk         ###   ########.fr       */
+/*   Updated: 2024/06/24 17:01:02 by dongyeuk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	standby(t_ph *ph)
 	if (ph->db->eat != ph->db->sleep)
 		ph->chk_time = ph->db->eat - ph->db->sleep;
 	if (a == 1)
-		ph->chk_time = ph->db->eat;
+		ph->chk_time = 2 * ph->db->eat - ph->db->sleep;
 	if (delay == 0)
 		delay = ph->db->life;
 	sem_wait(ph->db->ready);
